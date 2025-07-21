@@ -14,7 +14,7 @@ body {
     box-sizing: border-box;
     text-align: left;
 
-    transform: translateY(-9vh); /* move slightly up */
+    transform: translateY(-5vh); /* move slightly up */
 }
 
 #name {
@@ -59,4 +59,8 @@ footer {
 #content {
     position: relative;
     z-index: 1;
+}
+
+#email {
+    margin-left: 125px;
 }
