@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Utkarsh_projects_show</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <canvas id="bgCanvas"></canvas>
+        <div id="content">
+            <!-- all your existing content here -->
+            <p id="name">Utkarsh Pradhan</p>
+            <p id="tagline">Creating order from chaos.</p>
+            <!-- …etc… -->
+        </div>
+        <br />
+        <hr />
+        <br />
+        <p id="project">Projects are yet to come.</p>
+        <p id="contact">Contact:</p>
+        <a
+            id="linkedin"
+            href="https://www.linkedin.com/in/utkarsh-pradhan-a435b3259/"
+            >Linkedin</a
+        >
+        <br />
+        <br />
+        <a id="github" href="https://github.com/spawnagain19">Github</a>
+        <br />
+        <br />
+        <a id="x" href="https://x.com/UtkarshPradhann">X.com</a>
+        <br />
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <footer>© 2025 Utkarsh Pradhan. All rights reserved.</footer>
+
+        <script>
+            const canvas = document.getElementById("bgCanvas");
+            const ctx = canvas.getContext("2d");
+
+            // your custom character set:
+            const chars = [
+                "-",
+                "1",
+                "0",
+                "/",
+                "\\",
+                "|",
+                "*",
+                "(",
+                ")",
+                "&",
+                "^",
+                "%",
+                "$",
+                "#",
+                "@",
+                "!",
+            ];
+
+            const fontSize = 24; // bigger for more spacing
+            const litProb = 0.002; // chance per cell per frame to light up
+            const decay = 0.06; // how fast lit cells fade
+            let cols, rows, grid;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                cols = Math.floor(canvas.width / fontSize);
+                rows = Math.floor(canvas.height / fontSize);
+                // initialize brightness grid (0 = off, 1 = fully lit)
+                grid = Array.from({ length: rows }, () =>
+                    Array.from({ length: cols }, () => 0),
+                );
+            }
+            window.addEventListener("resize", resize);
+            resize();
+
+            function draw() {
+                // clear to background color
+                ctx.fillStyle = "#eee";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let y = 0; y < rows; y++) {
+                    for (let x = 0; x < cols; x++) {
+                        // randomly trigger a “light”
+                        if (Math.random() < litProb) grid[y][x] = 1;
+
+                        // compute current brightness
+                        const b = grid[y][x];
+
+                        // map brightness → color (dark when lit, light when off)
+                        const shade = Math.floor(200 - b * 180);
+                        ctx.fillStyle = `rgb(${shade},${shade},${shade})`;
+
+                        // pick a random char from your set when lit, else a dash as “off”
+                        const ch =
+                            b > 0.5
+                                ? chars[
+                                      Math.floor(Math.random() * chars.length)
+                                  ]
+                                : "-";
+
+                        // draw it at (x, y) cell
+                        ctx.fillText(ch, x * fontSize, y * fontSize + fontSize);
+
+                        // fade out
+                        grid[y][x] = Math.max(0, b - decay);
+                    }
+                }
+
+                setTimeout(draw, 120);
+            }
+
+            draw();
+        </script>
+    </body>
+</html>
